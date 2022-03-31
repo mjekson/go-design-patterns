@@ -2,7 +2,6 @@ package barrier
 
 import (
 	"bytes"
-	"io"
 	"os"
 	"strings"
 	"testing"
@@ -50,8 +49,10 @@ func captureBarrierOutPut(enpoints ...string) string {
 	os.Stdout = writer
 	out := make(chan string)
 	go func() {
-		var buf bytes.Buffer
-		io.Copy(&buf, reader)
+		// var buf bytes.Buffer
+		// io.Copy(&buf, reader)
+		buf := new(bytes.Buffer)
+		buf.ReadFrom(reader)
 		out <- buf.String()
 	}()
 
